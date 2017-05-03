@@ -571,6 +571,7 @@
     option.from = start;
     option.to = end;
     BOOL flag = [_routesearch massTransitSearch:option];
+    //option = nil;
     
     if(flag) {
         NSLog(@"公交交通检索（支持垮城）发送成功");

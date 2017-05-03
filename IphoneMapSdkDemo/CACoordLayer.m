@@ -6,13 +6,14 @@
 #import "SportPathDemoViewController.h"
 
 static double mapTempy = 0;
+static double mapTempx = 0;
 static size_t retryNum = 0;
 CLLocationCoordinate2D paths[1000];
 @implementation CACoordLayer
 
 @dynamic mapx;
 @dynamic mapy;
-@dynamic layerMapPoint;
+@dynamic value;
 
 
 
@@ -25,7 +26,8 @@ CLLocationCoordinate2D paths[1000];
             CACoordLayer * input = layer;
             self.mapx = input.mapx;
             self.mapy = input.mapy;
-            self.layerMapPoint = input.layerMapPoint;
+            self.value = input.value;
+            //NSLog(@"self.value :%f,%f",self.value.x,self.value.y);
             [self setNeedsDisplay];
         }
     }
@@ -42,7 +44,7 @@ CLLocationCoordinate2D paths[1000];
     {
         return YES;
     }
-    if ([@"layerMapPoint" isEqualToString:key])
+    if ([@"value" isEqualToString:key])
     {
         return YES;
     }
@@ -54,21 +56,28 @@ CLLocationCoordinate2D paths[1000];
 {
     CACoordLayer * layer = [self presentationLayer];
     
-//    if (mapTempy != layer.mapx || retryNum >= 10) {
-        BMKMapPoint mappoint;
-        mappoint = BMKMapPointMake(layer.mapx, layer.mapy);
-        NSLog(@"一layerPoint : %f,%f", mappoint.x,mappoint.y);
-        //mappoint = BMKMapPointMake(layer.layerMapPoint.mapx, layer.layerMapPoint.mapy);
-        //NSLog(@"二layerPoint : %f,%f", mappoint.x,mappoint.y);
-        
-        //根据得到的坐标值，将其设置为annotation的经纬度
-        self.annotation.coordinate = BMKCoordinateForMapPoint(mappoint);
-        paths[retryNum] = BMKCoordinateForMapPoint(mappoint);
-        //设置layer的位置，显示动画
-        CGPoint center = [self.mapView convertCoordinate:BMKCoordinateForMapPoint(mappoint) toPointToView:self.mapView];
-        self.position = center;
-        mapTempy = layer.mapx;
-        retryNum = 0;
+//    if (mapTempy != layer.mapx || retryNum >= 5) {
+    
+    BMKMapPoint mappoint;
+    mappoint = BMKMapPointMake(layer.mapx, layer.mapy);
+    NSLog(@"一layerPoint : %f,%f", mappoint.x,mappoint.y);
+//    NSLog(@"D-value:%f,%f", mappoint.x - mapTempx,mappoint.y - mapTempy);
+    
+    //mappoint = BMKMapPointMake(layer.layerMapPoint.mapx, layer.layerMapPoint.mapy);
+    //NSLog(@"二layerPoint : %f,%f", mappoint.x,mappoint.y);
+    
+    //根据得到的坐标值，将其设置为annotation的经纬度
+    self.annotation.coordinate = BMKCoordinateForMapPoint(mappoint);
+    //[self.mapView setCenterCoordinate:self.annotation.coordinate animated:YES];
+    //paths[retryNum] = BMKCoordinateForMapPoint(mappoint);
+    //设置layer的位置，显示动画
+    CGPoint center = [self.mapView convertCoordinate:BMKCoordinateForMapPoint(mappoint) toPointToView:self.mapView];
+    self.position = center;
+    
+//    mapTempx = layer.mapx;
+//    mapTempy = layer.mapy;
+//    retryNum = 0;
+//    
 //    } else {
 //        retryNum ++;
 //    }

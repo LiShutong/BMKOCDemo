@@ -10,7 +10,7 @@
 #define MapXAnimationKey @"mapx"
 #define MapYAnimationKey @"mapy"
 #define RotationAnimationKey @"transform.rotation.z"
-#define MapAnimationKey @"layerMapPoint"
+#define MapAnimationKey @"value"
 
 @interface MovingAnnotationView() {
     NSArray *_tracing;//轨迹点
@@ -54,6 +54,7 @@
     NSMutableArray *rotationValues = [NSMutableArray arrayWithCapacity:num];
     
     NSMutableArray *xyValues = [NSMutableArray arrayWithCapacity:num];
+    NSMutableArray *Values = [NSMutableArray arrayWithCapacity:num];
     //BMKMapPoint *xyValue = malloc(([points count]) * sizeof(BMKMapPoint));
     
     NSMutableArray * times = [NSMutableArray arrayWithCapacity:num];
@@ -79,6 +80,8 @@
     
     [xyValues addObject:lastDestinationPoint];
     
+    [Values addObject:[NSValue valueWithCGPoint:CGPointMake(preLoc.x, preLoc.y)]];
+    
     [times addObject:@(0.f)];
     
     //set the animation points.
@@ -97,6 +100,8 @@
         
         [xyValues addObject:layerPoint];
         [xyValues addObject:layerPoint];
+        [Values addObject:[NSValue valueWithCGPoint:CGPointMake(p.x, p.y)]];
+        [Values addObject:[NSValue valueWithCGPoint:CGPointMake(p.x, p.y)]];
         //distance
         dis[i] = BMKMetersBetweenMapPoints(p, preLoc);
         sumOfDistance = sumOfDistance + dis[i];
@@ -129,7 +134,8 @@
     
     // add animation.
     CAKeyframeAnimation *xanimation = [CAKeyframeAnimation animationWithKeyPath:MapXAnimationKey];
-    xanimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
+    xanimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionDefault];
+    xanimation.calculationMode = kCAAnimationLinear;
     xanimation.values   = xvalues;
     xanimation.keyTimes = times;
     xanimation.duration = duration;
@@ -137,7 +143,8 @@
     xanimation.fillMode = kCAFillModeForwards;
     
     CAKeyframeAnimation *yanimation = [CAKeyframeAnimation animationWithKeyPath:MapYAnimationKey];
-    yanimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
+    yanimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionDefault];
+    xanimation.calculationMode = kCAAnimationLinear;
     yanimation.values   = yvalues;
     yanimation.keyTimes = times;
     yanimation.duration = duration;
@@ -152,7 +159,7 @@
     tranfAnimation.fillMode = kCAFillModeForwards;
     
     CAKeyframeAnimation *animation = [CAKeyframeAnimation animationWithKeyPath:MapAnimationKey];
-    animation.values = xyValues;
+    animation.values = Values;
     animation.keyTimes = times;
     animation.duration = duration;
     animation.delegate = self;
@@ -242,9 +249,11 @@
             isAnimation = NO;
             
             CACoordLayer * mylayer = ((CACoordLayer *)self.layer);
-            mylayer.layerMapPoint = ((layerMapPoint *)[keyAnim.values lastObject]);
-            currDestination.x = mylayer.layerMapPoint.mapx;
-            currDestination.y = mylayer.layerMapPoint.mapy;
+            NSValue *value = [keyAnim.values lastObject];
+            mylayer.value = [value CGPointValue];
+            
+//            currDestination.x = mylayer.layerMapPoint.mapx;
+//            currDestination.y = mylayer.layerMapPoint.mapy;
             [self updateAnnotationCoordinate];
             [self popFrontAnimationForKey:MapAnimationKey];
         }
@@ -310,15 +319,20 @@
         BMKMapPoint mapPoint = BMKMapPointForCoordinate(annotation.coordinate);
         mylayer.mapx = mapPoint.x;
         mylayer.mapy = mapPoint.y;
+        
         layerMapPoint *mylayerPoint = [[layerMapPoint alloc] init];
         mylayerPoint.mapx = mapPoint.x;
         mylayerPoint.mapy = mapPoint.y;
         mylayer.layerMapPoint = mylayerPoint;
         
+        mylayer.value = CGPointMake(mapPoint.x, mapPoint.y);
+
         //初始化CACoordLayer定义的BMKAnnotation对象
         mylayer.annotation = self.annotation;
 
         mylayer.centerOffset = self.centerOffset;
+        
+        mylayer.annotationView = self;
         
         isAnimatingX = NO;
         isAnimatingY = NO;

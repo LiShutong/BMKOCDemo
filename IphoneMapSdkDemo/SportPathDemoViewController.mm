@@ -9,6 +9,7 @@
 #import "MovingAnnotationView.h"
 #import "TracingPoint.h"
 #import "JSONKit.h"
+#import "CACoordLayer.h"
 
 @interface SportPathDemoViewController ()<MovingAnnotationViewAnimateDelegate> {
     BMKPointAnnotation *sportAnnotation;
@@ -30,12 +31,13 @@
         self.navigationController.navigationBar.translucent = NO;
     }
     
-    _mapView.zoomLevel = 17;
+    _mapView.zoomLevel = 18;
     _mapView.centerCoordinate = CLLocationCoordinate2DMake(40.056898, 116.307626);
     _mapView.delegate = self; // 此处记得不用的时候需要置nil，否则影响内存的释放
 
     //初始化轨迹点
     [self initSportNodes];
+    //[self initRectLayer];
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -61,6 +63,7 @@
     _tracking = [NSMutableArray array];
     //读取数据
     NSData *jsonData = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"sport_path" ofType:@"json"]];
+    //NSData *jsonData = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"sport" ofType:@"json"]];
     if (jsonData) {
         NSArray *array = [jsonData objectFromJSONData];
         for (NSDictionary *dic in array) {
@@ -72,6 +75,37 @@
             [_tracking addObject:tp];
         }
     }
+}
+//绕矩形循环跑
+- (void)initRectLayer
+{
+    CACoordLayer *rectLayer = [[CACoordLayer alloc] init];
+    rectLayer.frame = CGRectMake(15, 200, 30, 30);
+    rectLayer.cornerRadius = 15;
+    rectLayer.backgroundColor = [[UIColor blackColor] CGColor];
+    [self.mapView.layer addSublayer:rectLayer];
+    CAKeyframeAnimation *rectRunAnimation = [CAKeyframeAnimation animationWithKeyPath:@"position"];
+    //设定关键帧位置，必须含起始与终止位置
+    rectRunAnimation.values = @[[NSValue valueWithCGPoint:rectLayer.frame.origin],
+                                [NSValue valueWithCGPoint:CGPointMake(320 - 15,
+                                                                      rectLayer.frame.origin.y)],
+                                [NSValue valueWithCGPoint:CGPointMake(320 - 15,
+                                                                      rectLayer.frame.origin.y + 100)],
+                                [NSValue valueWithCGPoint:CGPointMake(15, rectLayer.frame.origin.y + 100)],
+                                [NSValue valueWithCGPoint:rectLayer.frame.origin]];
+    //设定每个关键帧的时长，如果没有显式地设置，则默认每个帧的时间=总duration/(values.count - 1)
+    rectRunAnimation.keyTimes = @[[NSNumber numberWithFloat:0.0], [NSNumber numberWithFloat:0.6],
+                                  [NSNumber numberWithFloat:0.7], [NSNumber numberWithFloat:0.8],
+                                  [NSNumber numberWithFloat:1]];
+    rectRunAnimation.timingFunctions = @[[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut],
+                                         [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear],
+                                         [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear],
+                                         [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]];
+    rectRunAnimation.repeatCount = 1000;
+    rectRunAnimation.autoreverses = YES;
+    rectRunAnimation.calculationMode = kCAAnimationLinear;
+    rectRunAnimation.duration = 4;
+    [rectLayer addAnimation:rectRunAnimation forKey:@"rectRunAnimation"];
 }
 
 //开始
@@ -106,8 +140,8 @@
     [sportNodes addObject:currentNode];
     sportAnnotationView.imageView.transform = CGAffineTransformMakeRotation(tempNode.angle);
     [sportAnnotationView addTrackingAnimationForPoints:sportNodes duration:tempNode.distance/tempNode.speed];
-    //[sportAnnotationView addTrackingAnimationForPoints:sportNodes duration:10];
     //[sportAnnotationView addTrackingAnimationForPoints:_tracking duration:30];
+    //[sportAnnotationView addTrackingAnimationForPoints:sportNodes duration:15];
     tempNode = currentNode;
     
 }

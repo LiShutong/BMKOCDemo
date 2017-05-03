@@ -19,12 +19,12 @@
 		40A06E94171BE6520055E95E /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40A06E93171BE6520055E95E /* OpenGLES.framework */; };
 		40D6490B174BA52900D03105 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 40D648EB174BA52900D03105 /* MainWindow.xib */; };
 		40D64915174BA52900D03105 /* RootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 40D648FA174BA52900D03105 /* RootViewController.xib */; };
+		4B423B7C1EB835DA002E8FDE /* sport.json in Resources */ = {isa = PBXBuildFile; fileRef = 4B423B7B1EB835DA002E8FDE /* sport.json */; };
 		4B4A2F6F1E94E4D400D4BD4F /* IndoorDemoViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4B4A2F6E1E94E4D400D4BD4F /* IndoorDemoViewController.mm */; };
 		4B5867691EB196AB005B85FD /* CACoordLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B5867621EB196AB005B85FD /* CACoordLayer.m */; };
 		4B58676A1EB196AB005B85FD /* MovingAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B5867641EB196AB005B85FD /* MovingAnnotationView.m */; };
 		4B58676B1EB196AB005B85FD /* SportPathDemoViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4B5867661EB196AB005B85FD /* SportPathDemoViewController.mm */; };
 		4B58676C1EB196AB005B85FD /* TracingPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B5867681EB196AB005B85FD /* TracingPoint.m */; };
-		4B5867701EB1D666005B85FD /* sport.json in Resources */ = {isa = PBXBuildFile; fileRef = 4B58676F1EB1D666005B85FD /* sport.json */; };
 		4BB039641EADE95E00724037 /* mapapi.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4BB039631EADE95E00724037 /* mapapi.bundle */; };
 		4BE187641E94C64200E6F347 /* locations.json in Resources */ = {isa = PBXBuildFile; fileRef = 4BE187631E94C64200E6F347 /* locations.json */; };
 		4BE187661E94C7A800E6F347 /* sport_path.json in Resources */ = {isa = PBXBuildFile; fileRef = 4BE187651E94C7A800E6F347 /* sport_path.json */; };
@@ -263,6 +263,7 @@
 		40A06E93171BE6520055E95E /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		40D648EB174BA52900D03105 /* MainWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MainWindow.xib; path = src/MainWindow.xib; sourceTree = SOURCE_ROOT; };
 		40D648FA174BA52900D03105 /* RootViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RootViewController.xib; path = src/RootViewController.xib; sourceTree = SOURCE_ROOT; };
+		4B423B7B1EB835DA002E8FDE /* sport.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = sport.json; sourceTree = "<group>"; };
 		4B4A2F6E1E94E4D400D4BD4F /* IndoorDemoViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = IndoorDemoViewController.mm; path = src/IndoorDemoViewController.mm; sourceTree = SOURCE_ROOT; };
 		4B5867611EB196AB005B85FD /* CACoordLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CACoordLayer.h; sourceTree = "<group>"; };
 		4B5867621EB196AB005B85FD /* CACoordLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CACoordLayer.m; sourceTree = "<group>"; };
@@ -272,7 +273,6 @@
 		4B5867661EB196AB005B85FD /* SportPathDemoViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SportPathDemoViewController.mm; sourceTree = "<group>"; };
 		4B5867671EB196AB005B85FD /* TracingPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TracingPoint.h; sourceTree = "<group>"; };
 		4B5867681EB196AB005B85FD /* TracingPoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TracingPoint.m; sourceTree = "<group>"; };
-		4B58676F1EB1D666005B85FD /* sport.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = sport.json; sourceTree = "<group>"; };
 		4BB039631EADE95E00724037 /* mapapi.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = mapapi.bundle; path = BaiduMapAPI/BaiduMapAPI_Map.framework/Resources/mapapi.bundle; sourceTree = "<group>"; };
 		4BE187631E94C64200E6F347 /* locations.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = locations.json; sourceTree = "<group>"; };
 		4BE187651E94C7A800E6F347 /* sport_path.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = sport_path.json; sourceTree = "<group>"; };
@@ -688,7 +688,7 @@
 		E16369891A26FA28004E2DBF /* Image */ = {
 			isa = PBXGroup;
 			children = (
-				4B58676F1EB1D666005B85FD /* sport.json */,
+				4B423B7B1EB835DA002E8FDE /* sport.json */,
 				4BE187651E94C7A800E6F347 /* sport_path.json */,
 				4BE187631E94C64200E6F347 /* locations.json */,
 				E1AFA40D1BC8F4F50042E322 /* LocalTileImage */,
@@ -1162,7 +1162,7 @@
 				E12075E91755B46000E70513 /* GeocodeDemoViewController.xib in Resources */,
 				E10E90B91D76F7110020E930 /* icon_stairs.png in Resources */,
 				E1AFA4E31BC8F4F60042E322 /* 17_25308_9428.jpg in Resources */,
-				4B5867701EB1D666005B85FD /* sport.json in Resources */,
+				4B423B7C1EB835DA002E8FDE /* sport.json in Resources */,
 				E1AFA4D51BC8F4F60042E322 /* 17_25307_9426.jpg in Resources */,
 				E1AFA4CD1BC8F4F60042E322 /* 17_25306_9430.jpg in Resources */,
 				E163696E1A26CD17004E2DBF /* line_dash_texture.png in Resources */,
