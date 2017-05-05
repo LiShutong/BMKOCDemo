@@ -110,6 +110,7 @@
 
 - (void)onGetTransitRouteResult:(BMKRouteSearch*)searcher result:(BMKTransitRouteResult*)result errorCode:(BMKSearchErrorCode)error
 {
+    NSLog(@"onGetTransitRouteResult error:%d", (int)error);
     NSArray* array = [NSArray arrayWithArray:_mapView.annotations];
 	[_mapView removeAnnotations:array];
 	array = [NSArray arrayWithArray:_mapView.overlays];
@@ -168,6 +169,7 @@
 }
 - (void)onGetDrivingRouteResult:(BMKRouteSearch*)searcher result:(BMKDrivingRouteResult*)result errorCode:(BMKSearchErrorCode)error
 {
+    NSLog(@"onGetDrivingRouteResult error:%d", (int)error);
     NSArray* array = [NSArray arrayWithArray:_mapView.annotations];
 	[_mapView removeAnnotations:array];
 	array = [NSArray arrayWithArray:_mapView.overlays];
@@ -241,6 +243,7 @@
 
 - (void)onGetWalkingRouteResult:(BMKRouteSearch*)searcher result:(BMKWalkingRouteResult*)result errorCode:(BMKSearchErrorCode)error
 {
+    NSLog(@"onGetWalkingRouteResult error:%d", (int)error);
     NSArray* array = [NSArray arrayWithArray:_mapView.annotations];
 	[_mapView removeAnnotations:array];
 	array = [NSArray arrayWithArray:_mapView.overlays];

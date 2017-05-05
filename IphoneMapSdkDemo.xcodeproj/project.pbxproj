@@ -247,6 +247,23 @@
 		FD00302E1E1E2E6C0045C3F0 /* BaiduMapAPI_Utils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD0030271E1E2E6C0045C3F0 /* BaiduMapAPI_Utils.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		4BEA1BA21EBB2B0C00BAF530 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4BEA1B881EBB2B0B00BAF530 /* MapComponentTest.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E14C062E18CD99CE00427378;
+			remoteInfo = MapComponentTest;
+		};
+		4BEA1BA41EBB2D6C00BAF530 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4BEA1B881EBB2B0B00BAF530 /* MapComponentTest.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = E14C062D18CD99CE00427378;
+			remoteInfo = MapComponentTest;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		40A06DB7171BCEB80055E95E /* IphoneMapSdkDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IphoneMapSdkDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		40A06DBB171BCEB80055E95E /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -276,6 +293,7 @@
 		4BB039631EADE95E00724037 /* mapapi.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = mapapi.bundle; path = BaiduMapAPI/BaiduMapAPI_Map.framework/Resources/mapapi.bundle; sourceTree = "<group>"; };
 		4BE187631E94C64200E6F347 /* locations.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = locations.json; sourceTree = "<group>"; };
 		4BE187651E94C7A800E6F347 /* sport_path.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = sport_path.json; sourceTree = "<group>"; };
+		4BEA1B881EBB2B0B00BAF530 /* MapComponentTest.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MapComponentTest.xcodeproj; path = "../../../baidu/mapclient/mapsdk-vector/iphone/MapComponentTest/MapComponentTest.xcodeproj"; sourceTree = "<group>"; };
 		E10BEDF51BABBEB4006BD419 /* BMKClusterAlgorithm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BMKClusterAlgorithm.h; sourceTree = "<group>"; };
 		E10BEDF61BABBEB4006BD419 /* BMKClusterAlgorithm.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BMKClusterAlgorithm.m; sourceTree = "<group>"; };
 		E10BEDF71BABBEB4006BD419 /* BMKClusterItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BMKClusterItem.h; sourceTree = "<group>"; };
@@ -576,6 +594,7 @@
 				40A06DC2171BCEB80055E95E /* Supporting Files */,
 				40A06DBA171BCEB80055E95E /* Frameworks */,
 				40A06DB8171BCEB80055E95E /* Products */,
+				4BEA1B881EBB2B0B00BAF530 /* MapComponentTest.xcodeproj */,
 			);
 			sourceTree = "<group>";
 		};
@@ -658,6 +677,14 @@
 				4BB039631EADE95E00724037 /* mapapi.bundle */,
 			);
 			name = Resources;
+			sourceTree = "<group>";
+		};
+		4BEA1B891EBB2B0B00BAF530 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4BEA1BA31EBB2B0C00BAF530 /* MapComponentTest.app */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		E10BEDF41BABBEB4006BD419 /* Cluster */ = {
@@ -1054,6 +1081,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				4BEA1BA51EBB2D6C00BAF530 /* PBXTargetDependency */,
 			);
 			name = IphoneMapSdkDemo;
 			productName = IphoneMapSdkDemo;
@@ -1084,12 +1112,28 @@
 			mainGroup = 40A06DAC171BCEB80055E95E;
 			productRefGroup = 40A06DB8171BCEB80055E95E /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 4BEA1B891EBB2B0B00BAF530 /* Products */;
+					ProjectRef = 4BEA1B881EBB2B0B00BAF530 /* MapComponentTest.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				40A06DB6171BCEB80055E95E /* IphoneMapSdkDemo */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		4BEA1BA31EBB2B0C00BAF530 /* MapComponentTest.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = MapComponentTest.app;
+			remoteRef = 4BEA1BA21EBB2B0C00BAF530 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		40A06DB5171BCEB80055E95E /* Resources */ = {
@@ -1327,6 +1371,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		4BEA1BA51EBB2D6C00BAF530 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = MapComponentTest;
+			targetProxy = 4BEA1BA41EBB2D6C00BAF530 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		40A06DC4171BCEB80055E95E /* InfoPlist.strings */ = {
