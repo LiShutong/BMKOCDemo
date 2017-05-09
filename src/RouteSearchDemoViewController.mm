@@ -20,15 +20,15 @@
     //适配ios7
     if( ([[[UIDevice currentDevice] systemVersion] doubleValue]>=7.0))
     {
-//        self.edgesForExtendedLayout=UIRectEdgeNone;
+        //        self.edgesForExtendedLayout=UIRectEdgeNone;
         self.navigationController.navigationBar.translucent = NO;
     }
-	_routesearch = [[BMKRouteSearch alloc]init];
-	_startCityText.text = @"北京";
-	_startAddrText.text = @"天安门";
-	_endCityText.text = @"北京";
-	_endAddrText.text = @"百度大厦";
-
+    _routesearch = [[BMKRouteSearch alloc]init];
+    _startCityText.text = @"北京";
+    _startAddrText.text = @"天安门";
+    _endCityText.text = @"北京";
+    _endAddrText.text = @"百度科技园";
+    
     UIBarButtonItem* btnWayPoint = [[UIBarButtonItem alloc]init];
     btnWayPoint.target = self;
     btnWayPoint.action = @selector(wayPointDemo);
@@ -88,22 +88,22 @@
 
 - (BMKAnnotationView *)mapView:(BMKMapView *)view viewForAnnotation:(id <BMKAnnotation>)annotation
 {
-	if ([annotation isKindOfClass:[RouteAnnotation class]]) {
-		return [(RouteAnnotation*)annotation getRouteAnnotationView:view];
-	}
-	return nil;
+    if ([annotation isKindOfClass:[RouteAnnotation class]]) {
+        return [(RouteAnnotation*)annotation getRouteAnnotationView:view];
+    }
+    return nil;
 }
 
 - (BMKOverlayView*)mapView:(BMKMapView *)map viewForOverlay:(id<BMKOverlay>)overlay
 {
-	if ([overlay isKindOfClass:[BMKPolyline class]]) {
+    if ([overlay isKindOfClass:[BMKPolyline class]]) {
         BMKPolylineView* polylineView = [[BMKPolylineView alloc] initWithOverlay:overlay];
         polylineView.fillColor = [[UIColor alloc] initWithRed:0 green:1 blue:1 alpha:1];
         polylineView.strokeColor = [[UIColor alloc] initWithRed:0 green:0 blue:1 alpha:0.7];
         polylineView.lineWidth = 3.0;
         return polylineView;
     }
-	return nil;
+    return nil;
 }
 
 #pragma mark - BMKRouteSearchDelegate
@@ -112,15 +112,15 @@
 {
     NSLog(@"onGetTransitRouteResult error:%d", (int)error);
     NSArray* array = [NSArray arrayWithArray:_mapView.annotations];
-	[_mapView removeAnnotations:array];
-	array = [NSArray arrayWithArray:_mapView.overlays];
-	[_mapView removeOverlays:array];
+    [_mapView removeAnnotations:array];
+    array = [NSArray arrayWithArray:_mapView.overlays];
+    [_mapView removeOverlays:array];
     if (error == BMK_SEARCH_NO_ERROR) {
-		BMKTransitRouteLine* plan = (BMKTransitRouteLine*)[result.routes objectAtIndex:0];
+        BMKTransitRouteLine* plan = (BMKTransitRouteLine*)[result.routes objectAtIndex:0];
         // 计算路线方案中的路段数目
-		NSInteger size = [plan.steps count];
-		int planPointCounts = 0;
-		for (int i = 0; i < size; i++) {
+        NSInteger size = [plan.steps count];
+        int planPointCounts = 0;
+        for (int i = 0; i < size; i++) {
             BMKTransitStep* transitStep = [plan.steps objectAtIndex:i];
             if(i==0){
                 RouteAnnotation* item = [[RouteAnnotation alloc]init];
@@ -161,25 +161,29 @@
             
         }
         // 通过points构建BMKPolyline
-		BMKPolyline* polyLine = [BMKPolyline polylineWithPoints:temppoints count:planPointCounts];
-		[_mapView addOverlay:polyLine]; // 添加路线overlay
-		delete []temppoints;
+        BMKPolyline* polyLine = [BMKPolyline polylineWithPoints:temppoints count:planPointCounts];
+        [_mapView addOverlay:polyLine]; // 添加路线overlay
+        delete []temppoints;
         [self mapViewFitPolyLine:polyLine];
-	}
+    } else if (error == BMK_SEARCH_AMBIGUOUS_ROURE_ADDR) {
+        //检索地址有歧义,返回起点或终点的地址信息结果：BMKSuggestAddrInfo，获取到推荐的poi列表
+        NSLog(@"检索地址有岐义，请重新输入。");
+        [self showGuide];
+    }
 }
 - (void)onGetDrivingRouteResult:(BMKRouteSearch*)searcher result:(BMKDrivingRouteResult*)result errorCode:(BMKSearchErrorCode)error
 {
     NSLog(@"onGetDrivingRouteResult error:%d", (int)error);
     NSArray* array = [NSArray arrayWithArray:_mapView.annotations];
-	[_mapView removeAnnotations:array];
-	array = [NSArray arrayWithArray:_mapView.overlays];
-	[_mapView removeOverlays:array];
-	if (error == BMK_SEARCH_NO_ERROR) {
+    [_mapView removeAnnotations:array];
+    array = [NSArray arrayWithArray:_mapView.overlays];
+    [_mapView removeOverlays:array];
+    if (error == BMK_SEARCH_NO_ERROR) {
         BMKDrivingRouteLine* plan = (BMKDrivingRouteLine*)[result.routes objectAtIndex:0];
         // 计算路线方案中的路段数目
-		NSInteger size = [plan.steps count];
-		int planPointCounts = 0;
-		for (int i = 0; i < size; i++) {
+        NSInteger size = [plan.steps count];
+        int planPointCounts = 0;
+        for (int i = 0; i < size; i++) {
             BMKDrivingStep* transitStep = [plan.steps objectAtIndex:i];
             if(i==0){
                 RouteAnnotation* item = [[RouteAnnotation alloc]init];
@@ -234,25 +238,29 @@
             
         }
         // 通过points构建BMKPolyline
-		BMKPolyline* polyLine = [BMKPolyline polylineWithPoints:temppoints count:planPointCounts];
-		[_mapView addOverlay:polyLine]; // 添加路线overlay
-		delete []temppoints;
+        BMKPolyline* polyLine = [BMKPolyline polylineWithPoints:temppoints count:planPointCounts];
+        [_mapView addOverlay:polyLine]; // 添加路线overlay
+        delete []temppoints;
         [self mapViewFitPolyLine:polyLine];
-	}
+    } else if (error == BMK_SEARCH_AMBIGUOUS_ROURE_ADDR) {
+        //检索地址有歧义,返回起点或终点的地址信息结果：BMKSuggestAddrInfo，获取到推荐的poi列表
+        NSLog(@"检索地址有岐义，请重新输入。");
+        [self showGuide];
+    }
 }
 
 - (void)onGetWalkingRouteResult:(BMKRouteSearch*)searcher result:(BMKWalkingRouteResult*)result errorCode:(BMKSearchErrorCode)error
 {
     NSLog(@"onGetWalkingRouteResult error:%d", (int)error);
     NSArray* array = [NSArray arrayWithArray:_mapView.annotations];
-	[_mapView removeAnnotations:array];
-	array = [NSArray arrayWithArray:_mapView.overlays];
-	[_mapView removeOverlays:array];
-	if (error == BMK_SEARCH_NO_ERROR) {
+    [_mapView removeAnnotations:array];
+    array = [NSArray arrayWithArray:_mapView.overlays];
+    [_mapView removeOverlays:array];
+    if (error == BMK_SEARCH_NO_ERROR) {
         BMKWalkingRouteLine* plan = (BMKWalkingRouteLine*)[result.routes objectAtIndex:0];
-		NSInteger size = [plan.steps count];
-		int planPointCounts = 0;
-		for (int i = 0; i < size; i++) {
+        NSInteger size = [plan.steps count];
+        int planPointCounts = 0;
+        for (int i = 0; i < size; i++) {
             BMKWalkingStep* transitStep = [plan.steps objectAtIndex:i];
             if(i==0){
                 RouteAnnotation* item = [[RouteAnnotation alloc]init];
@@ -295,11 +303,15 @@
             
         }
         // 通过points构建BMKPolyline
-		BMKPolyline* polyLine = [BMKPolyline polylineWithPoints:temppoints count:planPointCounts];
-		[_mapView addOverlay:polyLine]; // 添加路线overlay
-		delete []temppoints;
+        BMKPolyline* polyLine = [BMKPolyline polylineWithPoints:temppoints count:planPointCounts];
+        [_mapView addOverlay:polyLine]; // 添加路线overlay
+        delete []temppoints;
         [self mapViewFitPolyLine:polyLine];
-	}
+    } else if (error == BMK_SEARCH_AMBIGUOUS_ROURE_ADDR) {
+        //检索地址有歧义,返回起点或终点的地址信息结果：BMKSuggestAddrInfo，获取到推荐的poi列表
+        NSLog(@"检索地址有岐义，请重新输入。");
+        [self showGuide];
+    }
 }
 
 /**
@@ -364,6 +376,10 @@
         [_mapView addOverlay:polyLine]; // 添加路线overlay
         delete []temppoints;
         [self mapViewFitPolyLine:polyLine];
+    } else if (error == BMK_SEARCH_AMBIGUOUS_ROURE_ADDR) {
+        //检索地址有歧义,返回起点或终点的地址信息结果：BMKSuggestAddrInfo，获取到推荐的poi列表
+        NSLog(@"检索地址有岐义，请重新输入。");
+        [self showGuide];
     }
 }
 
@@ -407,7 +423,7 @@
                 
                 //轨迹点总数累计
                 planPointCounts += subStep.pointsCount;
-
+                
                 //steps中是方案还是子路段，YES:steps是BMKMassTransitStep的子路段（A到B需要经过多个steps）;NO:steps是多个方案（A到B有多个方案选择）
                 if (transitStep.isSubStep == NO) {//是子方案，只取第一条方案
                     break;
@@ -429,7 +445,7 @@
         endAnnotation.coordinate = endCoor;
         endAnnotation.title = @"终点";
         endAnnotation.type = 1;
-        [_mapView addAnnotation:endAnnotation]; // 添加起点标注
+        [_mapView addAnnotation:endAnnotation]; // 添加终点标注
         
         //轨迹点
         BMKMapPoint * temppoints = new BMKMapPoint[planPointCounts];
@@ -457,6 +473,10 @@
         [_mapView addOverlay:polyLine]; // 添加路线overlay
         delete []temppoints;
         [self mapViewFitPolyLine:polyLine];
+    } else if (error == BMK_SEARCH_AMBIGUOUS_ROURE_ADDR) {
+        //检索地址有歧义,返回起点或终点的地址信息结果：BMKSuggestAddrInfo，获取到推荐的poi列表
+        NSLog(@"检索地址有岐义，请重新输入。");
+        [self showGuide];
     }
 }
 
@@ -465,9 +485,9 @@
 -(IBAction)onClickBusSearch
 {
     BMKPlanNode* start = [[BMKPlanNode alloc]init];
-	start.name = _startAddrText.text;
-	BMKPlanNode* end = [[BMKPlanNode alloc]init];
-	end.name = _endAddrText.text;
+    start.name = _startAddrText.text;
+    BMKPlanNode* end = [[BMKPlanNode alloc]init];
+    end.name = _endAddrText.text;
     
     BMKTransitRoutePlanOption *transitRouteSearchOption = [[BMKTransitRoutePlanOption alloc]init];
     transitRouteSearchOption.city= @"北京市";
@@ -491,11 +511,11 @@
 
 -(IBAction)onClickDriveSearch
 {
-	BMKPlanNode* start = [[BMKPlanNode alloc]init];
-	start.name = _startAddrText.text;
+    BMKPlanNode* start = [[BMKPlanNode alloc]init];
+    start.name = _startAddrText.text;
     start.cityName = @"北京市";
-	BMKPlanNode* end = [[BMKPlanNode alloc]init];
-	end.name = _endAddrText.text;
+    BMKPlanNode* end = [[BMKPlanNode alloc]init];
+    end.name = _endAddrText.text;
     end.cityName = @"北京市";
     
     BMKDrivingRoutePlanOption *drivingRouteSearchOption = [[BMKDrivingRoutePlanOption alloc]init];
@@ -511,18 +531,18 @@
     {
         NSLog(@"car检索发送失败");
     }
-
+    
 }
 
 -(IBAction)onClickWalkSearch
-{    
-	BMKPlanNode* start = [[BMKPlanNode alloc]init];
-	start.name = _startAddrText.text;
+{
+    BMKPlanNode* start = [[BMKPlanNode alloc]init];
+    start.name = _startAddrText.text;
     start.cityName = _startCityText.text;
-	BMKPlanNode* end = [[BMKPlanNode alloc]init];
-	end.name = _endAddrText.text;
+    BMKPlanNode* end = [[BMKPlanNode alloc]init];
+    end.name = _endAddrText.text;
     end.cityName = _endCityText.text;
-
+    
     
     BMKWalkingRoutePlanOption *walkingRouteSearchOption = [[BMKWalkingRoutePlanOption alloc]init];
     walkingRouteSearchOption.from = start;
@@ -536,7 +556,7 @@
     {
         NSLog(@"walk检索发送失败");
     }
-
+    
 }
 
 - (IBAction)onClickRidingSearch:(id)sender {
@@ -574,7 +594,6 @@
     option.from = start;
     option.to = end;
     BOOL flag = [_routesearch massTransitSearch:option];
-    //option = nil;
     
     if(flag) {
         NSLog(@"公交交通检索（支持垮城）发送成功");
@@ -614,6 +633,17 @@
     rect.size = BMKMapSizeMake(rbX - ltX, rbY - ltY);
     [_mapView setVisibleMapRect:rect];
     _mapView.zoomLevel = _mapView.zoomLevel - 0.3;
+}
+
+//检索提示
+-(void)showGuide
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"检索提示"
+                                                    message:@"检索地址有岐义，请重新输入。"
+                                                   delegate:self
+                                          cancelButtonTitle:@"确定"
+                                          otherButtonTitles:nil];
+    [alert show];
 }
 
 @end

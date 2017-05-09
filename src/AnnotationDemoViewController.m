@@ -112,7 +112,7 @@
         CLLocationCoordinate2D coor;
         coor.latitude = 39.915;
         coor.longitude = 116.404;
-        circle = [BMKCircle circleWithCenterCoordinate:coor radius:5000];
+        circle = [BMKCircle circleWithCenterCoordinate:coor radius:100];
     }
     [_mapView addOverlay:circle];
 
@@ -239,7 +239,7 @@
         BMKCircleView* circleView = [[BMKCircleView alloc] initWithOverlay:overlay];
         circleView.fillColor = [[UIColor alloc] initWithRed:1 green:0 blue:0 alpha:0.5];
         circleView.strokeColor = [[UIColor alloc] initWithRed:0 green:0 blue:1 alpha:0.5];
-        circleView.lineWidth = 5.0;
+        circleView.lineWidth = 3.0;
 
 		return circleView;
     }
